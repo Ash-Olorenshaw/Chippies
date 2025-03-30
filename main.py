@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 import platform
 import tkinter as tk
 import subprocess
@@ -38,11 +41,14 @@ class App(tk.Tk):
         command = self.text.get().strip()
         print(f"running command {command}")
         if command:
-            if platform.system() == "Darwin":
-                subprocess.Popen(["shortcuts", "run", command], stderr=subprocess.DEVNULL)
-                #subprocess.run(["open", "-a", command], stderr=subprocess.DEVNULL)
-            if platform.system() == "Linux":
-                subprocess.Popen([command], stderr=subprocess.DEVNULL)
+            match platform.system():
+                case "Darwin":
+                    subprocess.Popen(["shortcuts", "run", command], stderr=subprocess.DEVNULL)
+                    #subprocess.run(["open", "-a", command], stderr=subprocess.DEVNULL)
+                case "Linux":
+                    subprocess.Popen([command], stderr=subprocess.DEVNULL)
+                case "Windows":
+                    subprocess.Popen([command], stderr=subprocess.DEVNULL)
         self.clear()
         self.close(None)
 

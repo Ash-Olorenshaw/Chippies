@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Chippies
+Categories=TextEditor;Development;IDE;
+Comment=A really simple runner.
+Exec=/home/.local/bin/chippies
+GenericName=Chippies runner
+Icon=/home/.local/opt/Chippies/icons/main
+Keywords=chippies;chips;chipies;runner;
+NoDisplay=false
+StartupNotify=false
+Terminal=false
+Type=Application
+
