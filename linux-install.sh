@@ -30,10 +30,6 @@ elif [ $XDG_SESSION_HOME == "GNOME" ]; then
 	gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/Chippies-open/ command 'Chippies'
 	gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/Chippies-open/']"
 	echo "Chippies hotkey $GNOME_HOTKEY set for GNOME."
-
-elif [ $XDG_SESSION_HOME == "sway" ]; then
-	echo "Sway desktop enviroment detected..."
-	echo "Sway skipped..."
 else
 	echo "Err - this install script currently doesn't support '$XDG_SESSION_HOME'"
 fi
