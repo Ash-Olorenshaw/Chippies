@@ -1,27 +1,25 @@
-$AppName = "Chippies"
 $AppPath = "$env:LOCALAPPDATA\Chippies"
-$ExePath = "$AppPath\Chippies.py"
-$ShortcutPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\$AppName.lnk"
-$Hotkey = "0x20"  # Space key (use VK key codes)
+$Hotkey = "Ctrl+Alt+Space"
 
 if (!(Test-Path $AppPath)) {
     New-Item -ItemType Directory -Path $AppPath | Out-Null
 }
 
-Copy-Item -Path ".\Chippies" -Destination "$ExePath" -Force
+Copy-Item -Path ".\Chippies" -Destination "$AppPath\Chippies.py" -Force
 Write-Output "Chippies installed to $AppPath"
+
+$ShortcutPath = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Chippies.lnk"
 
 $WScriptShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
 $Shortcut.TargetPath = "pythonw"
-$Shortcut.Arguments = $ExePath
+$Shortcut.Arguments = "$AppPath\Chippies.py"
 $Shortcut.WorkingDirectory = $AppPath
-$Shortcut.Hotkey = "Ctrl+Alt+Space"
+$Shortcut.Hotkey = $Hotkey
 $Shortcut.Save()
 
-Write-Output "Shortcut created at $ShortcutPath"
-Write-Output "Hotkey Ctrl+Alt+Space assigned."
+Write-Output "Creating commandline executable."
+"CreateObject(`"Wscript.Shell`").Run `"pythonw %LOCALAPPDATA%/Chippies/Chippies.py`", 0, True" | Out-File -FilePath "$AppPath\Chippies.vbs"
 
-Start-Process "explorer.exe" -ArgumentList "/select,$ShortcutPath"
-Write-Output "Pinned the shortcut to Start."
-
+Write-Output "Shortcut created at $ShortcutPath and hotkey set."
+Write-Output "If you want to be able to run Chippies from commandline, make sure to put '$env:LOCALAPPDATA\Chippies' in your PATH."
