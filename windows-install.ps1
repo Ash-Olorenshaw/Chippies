@@ -13,7 +13,7 @@ Write-Output "Chippies installed to $AppPath"
 
 $WScriptShell = New-Object -ComObject WScript.Shell
 $Shortcut = $WScriptShell.CreateShortcut($ShortcutPath)
-$Shortcut.TargetPath = "python"
+$Shortcut.TargetPath = "pythonw"
 $Shortcut.Arguments = $ExePath
 $Shortcut.WorkingDirectory = $AppPath
 $Shortcut.Hotkey = "Ctrl+Alt+Space"
