@@ -18,12 +18,12 @@ winget install python
 brew install python
 ```
 Get the code first
-```
+```nu-script
 # clone this repo
 git clone https://github.com/Ash-Olorenshaw/Chippies.git
 ```
 Run the install script that is relevant to your OS
-```
+```nu-script
 # Linux (Bash)
 ./linux-install.sh
 
@@ -42,3 +42,9 @@ By default it's the command `ctrl + alt + space`, however, feel free to tinker w
 > **Note:** On Windows the method we use can *only* bind to combinations that start with `ctrl + alt`
 
 In addition to that, you should also get a shortcut for Chippies along with it being invokable from your shell of choice with `Chippies`.
+
+## TODO
+
+* [ ] Add application icon
+* [ ] Test MacOS installer
+* [ ] Fix some Windows stuff not properly opening a new window
