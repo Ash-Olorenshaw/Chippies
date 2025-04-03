@@ -46,5 +46,6 @@ In addition to that, you should also get a shortcut for Chippies along with it b
 ## TODO
 
 * [ ] Add application icon
-* [ ] Test MacOS installer
+* [*] Test MacOS installer ()
+    * [ ] Need to fix MacOS launch command
 * [ ] Fix some Windows stuff not properly opening a new window
