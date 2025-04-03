@@ -10,6 +10,7 @@ APP_PATH="$HOME/.local/opt/Chippies"
 EXECUTABLE="$APP_PATH/Chippies"
 HOTKEY="cmd shift space"
 
+chmod +x ./Chippies
 mkdir -p "$APP_PATH"
 cp -r ./* "$APP_PATH/"
 echo "Chippies installed to $APP_PATH"

@@ -1,10 +1,13 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-import platform
+from platform import system
+from os import listdir
+from os.path import isfile, join
+from pathlib import Path
+from configparser import ConfigParser
 import tkinter as tk
 import subprocess
-from pathlib import Path
 
 user_terminal = "konsole"
 
@@ -18,7 +21,7 @@ class App(tk.Tk):
         self.geometry("400x50+500+300")
         self.attributes("-topmost", True)
 
-        if platform.system() == "Linux":
+        if system() == "Linux":
             self.attributes("-type", "notification")
         else:
             self.overrideredirect(True)
@@ -42,20 +45,50 @@ class App(tk.Tk):
         command = self.text.get().strip()
         print(f"running command {command}")
         if command:
-            match platform.system():
+            match system():
                 case "Darwin":
-                    subprocess.Popen(f"open -a /Application/{command}", stderr=subprocess.DEVNULL)
-                    #subprocess.Popen(f"shortcuts run {command}", stderr=subprocess.DEVNULL)
-                    #subprocess.run(["open", "-a", command], stderr=subprocess.DEVNULL)
+                    subprocess.Popen(f"open -a /Application/{command}", stderr = subprocess.DEVNULL)
                 case "Linux":
-                    subprocess.Popen(f"if [ -z {command} ]; then {user_terminal}; else {command} >/dev/null 2>&1 || {user_terminal}; fi", stderr=subprocess.DEVNULL)
+                    usr_app = self.fuzzy_search("/usr/share/applications", command)
+                    if usr_app:
+                        try:
+                            subprocess.Popen(usr_app, stderr = subprocess.DEVNULL)
+                        except Exception as e:
+                            print(e)
+                            home_app = self.fuzzy_search(f"{Path.home()}/.local/share/Applications", command)
+                            if home_app:
+                                try:
+                                    subprocess.Popen(home_app, stderr = subprocess.DEVNULL)
+                                except Exception as e:
+                                    print(e)
+                                    try:
+                                        subprocess.Popen(["./linux-run.sh", command, user_terminal], stderr = subprocess.DEVNULL)
+                                    except Exception as e:
+                                        print(f"Failed to find application or command '{command}'")
+                                        print(e)
                 case "Windows":
-                    subprocess.Popen(f"cd %HOMEDRIVE%%HOMEPATH% && if \"{command}\"==\"\" (cmd) else (start \"\" \"{command}\" || cmd /k \"{command}\")", shell = True, stderr=subprocess.DEVNULL)
+                    subprocess.Popen(f"cd %HOMEDRIVE%%HOMEPATH% && if \"{command}\"==\"\" (cmd) else (start \"\" \"{command}\" || cmd /k \"{command}\")", shell = True, stderr = subprocess.DEVNULL)
         self.clear()
         self.close(None)
 
-    def search(self):
-        f"{Path.home()}/Applications"
+    def fuzzy_search(self, directory, target_name):
+        for file in listdir(directory):
+            full_file = join(directory, file)
+            if isfile(full_file):
+                print(f"testing file {target_name} against {file}")
+                if target_name.lower() in str(file).lower():
+                    data = ConfigParser(interpolation = None)
+                    data.read(full_file)
+                    if "Desktop Entry" in data:
+                        desktop_entry = data["Desktop Entry"]
+                        if "Exec" in desktop_entry:
+                            exec = desktop_entry["Exec"] 
+                            new_elems = []
+                            for arg in exec.split(' '): 
+                                if arg[0] != '%':
+                                    new_elems.append(arg)
+                            return ' '.join(new_elems)
+        return ""
 
     def clear(self):
         self.text.set("")
