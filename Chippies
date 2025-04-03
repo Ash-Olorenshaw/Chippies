@@ -44,7 +44,8 @@ class App(tk.Tk):
         if command:
             match platform.system():
                 case "Darwin":
-                    subprocess.Popen(f"shortcuts run {command}", stderr=subprocess.DEVNULL)
+                    subprocess.Popen(f"open -a /Application/{command}", stderr=subprocess.DEVNULL)
+                    #subprocess.Popen(f"shortcuts run {command}", stderr=subprocess.DEVNULL)
                     #subprocess.run(["open", "-a", command], stderr=subprocess.DEVNULL)
                 case "Linux":
                     subprocess.Popen(f"if [ -z {command} ]; then {user_terminal}; else {command} >/dev/null 2>&1 || {user_terminal}; fi", stderr=subprocess.DEVNULL)
