@@ -3,7 +3,7 @@
 
 from platform import system
 from os import listdir
-from os.path import isfile, join
+from os.path import isdir, isfile, join
 from pathlib import Path
 from configparser import ConfigParser
 import tkinter as tk
@@ -43,19 +43,19 @@ class App(tk.Tk):
 
     def on_save(self, event):
         command = self.text.get().strip()
-        print(f"running command {command}")
         if command:
             match system():
                 case "Darwin":
-                    subprocess.Popen(f"open -a /Application/{command}", stderr = subprocess.DEVNULL)
+                    usr_app = self.fuzzy_search("Darwin", "/Applications/", command)
+                    subprocess.Popen(["open", "-a", f"/Applications/{usr_app}"], stderr = subprocess.DEVNULL)
                 case "Linux":
-                    usr_app = self.fuzzy_search("/usr/share/applications", command)
+                    usr_app = self.fuzzy_search("Linux", "/usr/share/applications", command)
                     if usr_app:
                         try:
                             subprocess.Popen(usr_app, stderr = subprocess.DEVNULL)
                         except Exception as e:
                             print(e)
-                            home_app = self.fuzzy_search(f"{Path.home()}/.local/share/Applications", command)
+                            home_app = self.fuzzy_search("Linux", f"{Path.home()}/.local/share/Applications", command)
                             if home_app:
                                 try:
                                     subprocess.Popen(home_app, stderr = subprocess.DEVNULL)
@@ -71,15 +71,14 @@ class App(tk.Tk):
         self.clear()
         self.close(None)
 
-    def fuzzy_search(self, directory, target_name):
+    def fuzzy_search(self, current_os : str, directory, target_name):
         for file in listdir(directory):
             full_file = join(directory, file)
-            if isfile(full_file):
-                print(f"testing file {target_name} against {file}")
+            if (current_os == "Linux" and isfile(full_file)) or (current_os == "Darwin" and isdir(full_file)):
                 if target_name.lower() in str(file).lower():
                     data = ConfigParser(interpolation = None)
                     data.read(full_file)
-                    if "Desktop Entry" in data:
+                    if current_os == "Linux" and "Desktop Entry" in data:
                         desktop_entry = data["Desktop Entry"]
                         if "Exec" in desktop_entry:
                             exec = desktop_entry["Exec"] 
@@ -88,6 +87,8 @@ class App(tk.Tk):
                                 if arg[0] != '%':
                                     new_elems.append(arg)
                             return ' '.join(new_elems)
+                    elif current_os == "Darwin":
+                        return full_file
         return ""
 
     def clear(self):
