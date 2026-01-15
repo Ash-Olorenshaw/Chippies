@@ -80,4 +80,5 @@ bool find_binary(const char *command) {
         dir = strtok(NULL, ":");
     }
 	DESTRUCT(false);
+#undef DESTRUCT
 }
