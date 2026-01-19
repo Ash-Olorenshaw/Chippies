@@ -4,7 +4,7 @@ set -e
 CMDLINE_ARGS_MACOS="-rpath raylib/lib/ -framework CoreVideo -framework IOKit -framework Cocoa -framework OpenGL"
 CMDLINE_ARGS="-Lraylib/lib/ -lraylib -Iraylib/lib/"
 BUILD_DIR="./build"
-BINARY="./build/result"
+BINARY="./build/Chippies"
 
 run_program() {
 	echo "Running program: '$BINARY'"
@@ -14,7 +14,7 @@ run_program() {
 
 build_program() {
 	echo "Building program: '$BINARY'"
-	gcc main.c sys.c strings.c -o build/result $CMDLINE_ARGS $CMDLINE_ARGS_MACOS
+	gcc main.c sys.c strings.c -o $BINARY $CMDLINE_ARGS $CMDLINE_ARGS_MACOS
 	echo "Produced: '$BINARY'"
 }
 

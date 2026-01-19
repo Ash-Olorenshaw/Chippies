@@ -40,24 +40,24 @@ void render_loop(char *input_text, int *letter_count, Rectangle text_box) {
 
 	BeginDrawing();
 
-	ClearBackground(DARKGRAY);
-	
-	char command_name[MAX_INPUT_CHARS] = "";
-	executable command = { .name = command_name, .term = false };
-	Color current_text_col = find_program(input_text, &command) ? DARKGREEN : LIGHTGRAY;
-	DrawText(input_text, text_box.x + 5, text_box.y + 20, 20, current_text_col);
+		ClearBackground(DARKGRAY);
+		
+		char command_name[MAX_INPUT_CHARS] = "";
+		executable command = { .name = command_name, .term = false };
+		Color current_text_col = find_program(input_text, &command) ? DARKGREEN : LIGHTGRAY;
+		DrawText(input_text, text_box.x + 5, text_box.y + 20, 20, current_text_col);
 
-	char output_text[MAX_INPUT_CHARS];
-	if (command.term) {
-		strncpy(output_text, "Executing: ", MAX_INPUT_CHARS);
-		strcat(output_text, command.name);
-	}
-	else {
-		strncpy(output_text, "Opening: ", MAX_INPUT_CHARS);
-		strcat(output_text, command.name);
-	}
-	
-	DrawText(output_text, text_box.x + 5, text_box.y + 50, 10, LIGHTGRAY);
+		char output_text[MAX_INPUT_CHARS];
+		if (command.term) {
+			strncpy(output_text, "Executing: ", MAX_INPUT_CHARS);
+			strcat(output_text, command.name);
+		}
+		else {
+			strncpy(output_text, "Opening: ", MAX_INPUT_CHARS);
+			strcat(output_text, command.name);
+		}
+		
+		DrawText(output_text, text_box.x + 5, text_box.y + 50, 10, LIGHTGRAY);
 
 	EndDrawing();
 }
