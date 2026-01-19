@@ -12,7 +12,7 @@ First, clone this repo:
 git clone https://github.com/ash-olorenshaw/Chippies.git
 ```
 
-Download Raylib's latest release from (here)[https://github.com/raysan5/raylib/releases]. Untar the relevant archive to a directory named 'raylib' in the root of the project.
+Download Raylib's latest release from [here](https://github.com/raysan5/raylib/releases). Untar the relevant archive to a directory named 'raylib' in the root of the project.
 
 To build, run the build script: 
 
