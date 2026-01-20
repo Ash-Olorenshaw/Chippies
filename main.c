@@ -63,7 +63,7 @@ void render_loop(char *input_text, int *letter_count, Rectangle text_box) {
 }
 
 int main(void) {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Simple C Runner");
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Chippies");
 	SetWindowState(FLAG_WINDOW_UNDECORATED);
 	SetTargetFPS(60);
 
