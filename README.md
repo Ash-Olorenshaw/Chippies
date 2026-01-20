@@ -21,3 +21,11 @@ chmod +x ./build.sh
 ./build.sh build
 ./build.sh run # 'run' target will also build
 ```
+
+To create a MacOS `.app` file simply run: 
+
+```sh
+./build.sh bundle macos
+```
+
+You'll find the resulting file in the `./build` directory
